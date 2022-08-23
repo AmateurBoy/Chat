@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatMarchenkoIlya.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220823104122_TestMigration1")]
-    partial class TestMigration1
+    [Migration("20220823112924_TestMigration2")]
+    partial class TestMigration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,10 @@ namespace ChatMarchenkoIlya.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

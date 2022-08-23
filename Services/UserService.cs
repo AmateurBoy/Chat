@@ -38,6 +38,16 @@ namespace ChatMarchenkoIlya.Services
                 return user;                
             }
         }
+        public void EditUser(int id,string newName)
+        {
+            using (ApplicationContext AC = new())
+            {
+                User U = AC.Users.FirstOrDefault(x => x.Id == id);
+                U.Name = newName;
+                AC.Users.Update(U);
+                AC.SaveChanges();
+            }
+        }
 
     }
 }
