@@ -1,5 +1,6 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    background: #333;
 }
 
 @media (min-width: 768px) {
@@ -8,9 +9,24 @@ html {
   }
 }
 
+div.container {
+    background: #333; 
+    color: #fc0; 
+}
+
+nav.navbar {
+    background: #333; 
+}
+
+button.TestButton {
+    background: #A96FAB; 
+}
+
+
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    background: #333;
 }
 
 body {
