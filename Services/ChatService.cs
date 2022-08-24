@@ -8,6 +8,7 @@ namespace ChatMarchenkoIlya.Services
 {
     public class ChatService
     {
+        
         public string ConnectChat(int ChatID,User user)
         {
             using (ApplicationContext AC = new())
@@ -29,7 +30,7 @@ namespace ChatMarchenkoIlya.Services
                 
             }
         }
-        public string AddChat(string NameChat,User usercreater,TypeChat typeChat)
+        public string AddChat(string NameChat,User usercreater)
         {
             using (ApplicationContext AC = new())
             {

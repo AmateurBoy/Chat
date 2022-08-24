@@ -1,6 +1,27 @@
 ﻿@page
+@using ChatMarchenkoIlya.Services
+@using ChatMarchenkoIlya.Entitys
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Select Chat";
 }
+@{
+    ChatService CS = new();
+    User user = new();
+    user.Id = 1;
+}
+<div style="margin-top:3%;">
+        @{
+            foreach (var item in CS.GetChatUser(user))
+            {
+            <a class="nav-link" style="color:#ab68a8;margin-top:3%;" href="/Message">
+                        <div class="Chat-User">
+                            <h5>@item.NameChat</h5>
+                        </div>
+                    </a>
+            }
+        }        
+    </div>
+   
+
 

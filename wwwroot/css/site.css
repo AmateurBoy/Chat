@@ -8,7 +8,26 @@ html {
     font-size: 16px;
   }
 }
+#container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
 
+#leftThing {
+    width: 25%;
+    text-align: center;
+}
+
+#content {
+    width: 50%;
+    text-align:center;
+}
+
+#rightThing {
+    width: 25%;
+    text-align: center;
+}
 div.container {
     background: #333; 
     color: #fc0; 
@@ -20,6 +39,7 @@ nav.navbar {
 
 button.TestButton {
     background: #A96FAB; 
+    
 }
 
 
@@ -30,5 +50,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background: #333;
+    text-align: center;
 }
