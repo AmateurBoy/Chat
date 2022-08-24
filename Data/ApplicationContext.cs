@@ -21,6 +21,10 @@ namespace ChatMarchenkoIlya.Data
         {
             Configuration = configuration;
         }
+        public ApplicationContext()
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -28,10 +32,7 @@ namespace ChatMarchenkoIlya.Data
             
         }
         
-        public ApplicationContext()
-        {
-            Database.EnsureCreated();
-        }
+        
 
 
     }
