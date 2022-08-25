@@ -85,14 +85,25 @@ namespace ChatMarchenkoIlya.Services
 
             }
         }
+        public Chat GetChat(int ChatID)
+        {
+            using (ApplicationContext AC = new())
+            {
+                return AC.Chats.Include(x=> x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == ChatID);
+            }
+        }
         public List<ChatDTO> GetChatUser(User user)
         {
             using (ApplicationContext AC = new())
             {
                 int count = 0;
                 var ChatUsers = AC.Chats.Include(x => x.Users).ToList()
-                    .Where(x => x.Users.OrderBy(x=>x.Id==user.Id) != null);
+                    .Where(x => x.Users.OrderBy(x => x.Id == user.Id) != null);
                     
+
+                var Test = AC.Chats.Include(x => x.Users).ToList()
+                    .OrderBy(x=> x.Users.OrderBy(x=>x.Id==user.Id));
+
 
                 var ChatDel = AC.Chats.Include(x => x.Users).Where(x => x.Users.Count == 0);
                 if(ChatDel!=null)
@@ -125,6 +136,25 @@ namespace ChatMarchenkoIlya.Services
                 
                 return chatDTOs;
             }            
+        }
+        public List<Message> GetChatMessages(Chat Chat)
+        {
+            
+            using (ApplicationContext AC = new())
+            {
+                List<Message> messages = new List<Message>();
+                int count = 0;
+                var ChatMessage = AC.Chats.OrderBy(x => x.Id == Chat.Id)
+                    .Include(x => x.Messages).ToList();
+                
+                foreach (var chat in ChatMessage)
+                {
+                    chat.Messages.OrderBy(x => x.dateTime);
+                    messages = chat.Messages.ToList();
+                }
+
+                return messages;
+            }
         }
     }
 }

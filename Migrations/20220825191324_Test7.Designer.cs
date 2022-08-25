@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatMarchenkoIlya.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220823112924_TestMigration2")]
-    partial class TestMigration2
+    [Migration("20220825191324_Test7")]
+    partial class Test7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,10 +53,15 @@ namespace ChatMarchenkoIlya.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("dateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -108,19 +113,15 @@ namespace ChatMarchenkoIlya.Migrations
                     b.ToTable("ChatUser");
                 });
 
-            modelBuilder.Entity("MessageUser", b =>
+            modelBuilder.Entity("ChatMarchenkoIlya.Entitys.Message", b =>
                 {
-                    b.Property<int>("MessagesId")
-                        .HasColumnType("int");
+                    b.HasOne("ChatMarchenkoIlya.Entitys.User", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MessagesId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MessageUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ChatMessage", b =>
@@ -153,19 +154,9 @@ namespace ChatMarchenkoIlya.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MessageUser", b =>
+            modelBuilder.Entity("ChatMarchenkoIlya.Entitys.User", b =>
                 {
-                    b.HasOne("ChatMarchenkoIlya.Entitys.Message", null)
-                        .WithMany()
-                        .HasForeignKey("MessagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChatMarchenkoIlya.Entitys.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

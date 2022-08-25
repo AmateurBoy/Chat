@@ -1,8 +1,40 @@
-﻿@page
-@model ChatMarchenkoIlya.Pages.Message.MessagersPageModel
+﻿
+@using ChatMarchenkoIlya.Services
+@using ChatMarchenkoIlya.Entitys
+@using ChatMarchenkoIlya.Data
+
+
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = $"{Model[0].Name}";
+    
 }
 <div class="user-message">
-    <h1>Message</h1>
+    <h1>Message -> @Model[0].Name</h1>
+    @{
+        int userid = 0;
+        foreach (var mesg in Model[0].Messages)
+        {
+            
+            <div class="TextBox">
+                <div class="mesg">                    
+                    <h4>@mesg.User.Name</h4>
+                    <h5>@mesg.Text</h5>
+                    <h6>@mesg.dateTime</h6>
+                </div>
+            </div>
+            
+        }
+    }
+    <form action="/Seending" method="get">
+        <input id="textinput" type="text" name="Text"  />
+        <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
+        <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
+                
+        <button type="submit">
+            <img src="/img/Seend.png" height="25" />
+        </button>  
+        
+    </form>
+       
+    
 </div>

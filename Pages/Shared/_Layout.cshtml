@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,15 +9,61 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ChatMarchenkoIlya.styles.css" asp-append-version="true" />
 </head>
-
+@using ChatMarchenkoIlya.Services
+@using ChatMarchenkoIlya.Controllers
+@using ChatMarchenkoIlya.Entitys
+@using ChatMarchenkoIlya.Data
 <body>
 
-    <header>
-        
+    <header class="header-style" >
         <nav>                       
-                <img src="/img/ReenditLogo.png" height="50" />            
+            
+                <div id="container">
+
+                    <div id="leftThing">
+                        <img src="/img/ReenditLogo.png" height="50" />
+                    </div>
+
+                    <div id="content">
+                        
+                    </div>
+
+                    <div id="rightThing" style="text-align: center; padding-top:10px;">
+                    <img src="/img/usersimg/users.png" height="25" />
+                    @{
+                        UserService us = new();
+                        Type T = Model.GetType();                        
+                        if (T.Equals(typeof(Chat)))
+                        {
+
+
+                            <h8 style="color:azure">@CookiesRecipient.getInstance().Name</h8>
+                              
+                            }
+                            else if (T.Equals(typeof(ChatMarchenkoIlya.Entitys.User)))
+                            {
+                                CookiesRecipient.getInstance(Model.Name);
+                                <h8 style="color:azure">@Model.Name</h8>
+                            }
+                            else if (T.Equals(typeof(ChatMarchenkoIlya.Entitys.Message)))
+                            {
+                               
+                            <h8 style="color:azure">@CookiesRecipient.getInstance().Name</h8>
+
+                        }
+                        else{
+                            <h8 style="color:azure">@us.GetUser(Model[1]).Name</h8>
+                        }
+                    }
+                    </div>
+
+                </div>
                 
+                
+                          
+            
         </nav>
+        
     </header>
     <div class="container">
         

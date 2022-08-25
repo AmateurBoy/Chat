@@ -1,18 +1,28 @@
 ﻿using ChatMarchenkoIlya.Data;
 using ChatMarchenkoIlya.Entitys;
 using ChatMarchenkoIlya.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace ChatMarchenkoIlya.Services
 {
-    public class UserService
+    
+    public  class UserService
     {
+        
+
         public User Registers(User user)
         {
             using (ApplicationContext AC = new())
             {
+                Random random = new Random();
                 if (AC.Users.FirstOrDefault(x => x.Id == user.Id) == null)
                 {
+                    user.Name = $"User{random.Next(000000, 999999)}";
+                    Chat findchat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == 8);
+                    findchat.Users.Add(user);
                     AC.Users.Add(user);
+                    AC.Chats.Update(findchat);                    
                     AC.SaveChanges();
                     return user;
                 }
@@ -34,10 +44,12 @@ namespace ChatMarchenkoIlya.Services
         {
             using (ApplicationContext AC = new())
             {
-                User user = AC.Users.FirstOrDefault(x => x.Id == id);
+                
+                User user = AC.Users.Include(x => x.Chats).FirstOrDefault(x=>x.Id==id);
                 return user;                
             }
         }
+     
         public void EditUser(int id,string newName)
         {
             using (ApplicationContext AC = new())

@@ -12,6 +12,7 @@ namespace ChatMarchenkoIlya.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        
         public DbSet<Message> Messages { get; set; }
         
 
@@ -24,6 +25,7 @@ namespace ChatMarchenkoIlya.Data
         public ApplicationContext()
         {
             Database.EnsureCreated();
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

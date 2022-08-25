@@ -1,27 +1,30 @@
-﻿@page
+﻿
 @using ChatMarchenkoIlya.Services
-@using ChatMarchenkoIlya.Entitys
-@model IndexModel
+@using ChatMarchenkoIlya.Entitys 
+@using ChatMarchenkoIlya.Data
+@using System.Linq
+
+
 @{
     ViewData["Title"] = "Select Chat";
 }
 @{
-    ChatService CS = new();
-    User user = new();
-    user.Id = 1;
+
+
 }
 <div style="margin-top:3%;">
-        @{
-            foreach (var item in CS.GetChatUser(user))
-            {
-            <a class="nav-link" style="color:#ab68a8;margin-top:3%;" href="/Message">
-                        <div class="Chat-User">
-                            <h5>@item.NameChat</h5>
-                        </div>
-                    </a>
-            }
-        }        
-    </div>
+    @{
+        foreach (var item in Model[0].Chats)
+        {
+                string puth = $"/Message?ChatId={item.Id}&UserId={Model[0].Id}";
+                <a class="nav-link" style="color:#ab68a8;margin-top:3%;" href=@puth>
+                    <div class="Chat-User">
+                        <h5>@item.Name</h5>
+                    </div>
+                </a>
+        }
+    }        
+</div>
    
 
 

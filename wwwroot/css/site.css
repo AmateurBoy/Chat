@@ -42,15 +42,17 @@ button.TestButton {
     
 }
 
-
 html {
     position: relative;
     min-height: 100%;
     background: #333;
 }
-
+header.header-style{
+    border-bottom:groove;
+    padding-top:1em;
+    padding-bottom: 1em;
+}
 body {
     margin-bottom: 60px;
     background: #333;
-    text-align: center;
 }
