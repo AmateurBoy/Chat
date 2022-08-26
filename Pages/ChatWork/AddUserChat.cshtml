@@ -2,15 +2,23 @@
 @{
     ViewData["Title"] = $"Добавлеие юзера в чат";
 }
-<div>
-    <form action="/AddUserChat" method="get">
-
+<div>    
+    <form action="/AddUserInChat" method="get">
         <h5>Введите имя Usera</h5>
-
-        <input id="textinput" type="text" name="UserName" />
-        <input id="Userid" style="display:none" type="text" name="UserId" value=@Model />
-
-        <button type="submit">Create</button>
-
+        <input type="text" name="UserName"/>        
+        <h5>Ввыберите в какой чат добавить юзера</h5>        
+        @{
+            foreach (var item in Model[0].Chats)
+            {
+                <input type="checkbox" class="check" name="ChatId" value="@item.Id" />
+                <div class="Chat-User">                            
+                    <input style="display:none;" type="text" name="UserId" value="@Model[0].Id" />                           
+                    <h5>@item.Name</h5>                            
+                </div>
+            }
+        }
+        <button type="submit">
+            Добавить.
+        </button>        
     </form>
 </div>

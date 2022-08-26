@@ -70,15 +70,14 @@ div.MyMessage {
     left:70%;
     position:relative;
 }
-div.user-message{
-    width:80%;
-    scroll-behavior:auto;
+div.user-message {
+    width: 80%;
+    scroll-behavior: auto;
+    word-wrap: break-word;
 }
 div.input-div {
     
-    text-align: center;
-    position: absolute  ;
-    
-    left: 35%;
-    top:80%;
+    position: absolute;
+   
+    top: 80%;
 }

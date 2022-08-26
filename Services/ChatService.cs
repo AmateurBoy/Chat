@@ -9,19 +9,22 @@ namespace ChatMarchenkoIlya.Services
     public class ChatService
     {
         
-        public string ConnectChat(int ChatID,int UserId)
+        public string ConnectChat(int ChatID,string UserName)
         {
             using (ApplicationContext AC = new())
             {
                 try
                 {
-                    User  u = AC.Users.FirstOrDefault(x => x.Id == UserId);
-                    var Chat = AC.Chats.FirstOrDefault(x => x.Id == ChatID);
-                    Chat.Users = new List<User>();
-                    Chat.Users.Add(u);
-                    AC.Chats.Update(Chat);
-                                   
-                    AC.SaveChanges();
+                    User  u = AC.Users.FirstOrDefault(x => x.Name == UserName);
+                    
+                    
+                        var Chat = AC.Chats.Include(x => x.Users).FirstOrDefault(x => x.Id == ChatID);                        
+                        Chat.Users.Add(u);
+                        AC.Chats.Update(Chat);
+                    
+                        AC.SaveChanges();
+                        
+                    
                     return $"Пользователь:->{u.Name} Подключен к чату -> {Chat.Name}";
                 }
                 catch

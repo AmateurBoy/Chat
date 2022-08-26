@@ -7,6 +7,7 @@ namespace ChatMarchenkoIlya.Pages.ChatWork
     {
         public void OnGet()
         {
+           
         }
     }
 }
