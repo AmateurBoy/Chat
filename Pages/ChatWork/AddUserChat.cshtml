@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = $"Добавлеие юзера в чат";
+}
+<div>
+    <form action="/AddUserChat" method="get">
+
+        <h5>Введите имя Usera</h5>
+
+        <input id="textinput" type="text" name="UserName" />
+        <input id="Userid" style="display:none" type="text" name="UserId" value=@Model />
+
+        <button type="submit">Create</button>
+
+    </form>
+</div>

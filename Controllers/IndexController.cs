@@ -4,6 +4,8 @@ using ChatMarchenkoIlya.Interfaces;
 using ChatMarchenkoIlya.Services;
 
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ChatMarchenkoIlya.Controllers
 {
@@ -44,9 +46,8 @@ namespace ChatMarchenkoIlya.Controllers
             return View(@"Pages\Index.cshtml",obj);
         }
         [HttpGet("/ConnectChat")]
-        public IActionResult AddChat(int ChatID, int UserID)
+        public IActionResult CommectChat(int ChatID, int UserID)
         {
-            
             return Json(chatService.ConnectChat(ChatID, userService.GetUser(UserID)));
         }
         [HttpGet("/Message")]
@@ -65,11 +66,35 @@ namespace ChatMarchenkoIlya.Controllers
             obj.Add(UserId);
             return View(@"Pages\Message\MessagersPage.cshtml", obj); 
         }
-        
+        [HttpGet("/CreateChat")]
+        public IActionResult CreateChat(int UserId)
+        {
+            List<Object> obj = new();
+            obj.Add(0);
+            obj.Add(UserId);
+            return View(@"Pages/ChatWork/ChatCreate.cshtml",obj);
+        }
+        [HttpGet("/SelectChekChat")]
+        public IActionResult SelectChekChat(int ChatId, int UserId)
+        {
+            return View(@"Pages/Index.cshtml");
+        }
+            [HttpGet("/AddUserInChat")]
+        public IActionResult AddUserInChat(int ChatId, int UserId)
+        {
+            List<Object> obj = new();
+            obj.Add(0);
+            obj.Add(UserId);
+            obj.Add(chatService.ConnectChat(ChatId, UserId));
+            return View(@"Pages/Index.cshtml", obj);
+        }
         [HttpGet("/AddChat")]
         public IActionResult AddChat(string NameChat, int UserID)
         {
-            return Json(chatService.AddChat(NameChat, userService.GetUser(UserID)));
+            List<Object> obj = new();
+            obj.Add(chatService.AddChat(NameChat, UserID));
+            obj.Add(UserID);
+            return View(@"Pages\Message\MessagersPage.cshtml", obj);
         }
         [HttpGet("/Chat")]
         public IActionResult Chat(int UserID)

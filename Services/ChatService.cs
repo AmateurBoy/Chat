@@ -9,18 +9,20 @@ namespace ChatMarchenkoIlya.Services
     public class ChatService
     {
         
-        public string ConnectChat(int ChatID,User user)
+        public string ConnectChat(int ChatID,int UserId)
         {
             using (ApplicationContext AC = new())
             {
-                var Chat = AC.Chats.FirstOrDefault(x => x.Id == ChatID);
-                Chat.Users = new List<User>();
-                Chat.Users.Add(user);
-                AC.Chats.Update(Chat);
                 try
-                {                    
+                {
+                    User  u = AC.Users.FirstOrDefault(x => x.Id == UserId);
+                    var Chat = AC.Chats.FirstOrDefault(x => x.Id == ChatID);
+                    Chat.Users = new List<User>();
+                    Chat.Users.Add(u);
+                    AC.Chats.Update(Chat);
+                                   
                     AC.SaveChanges();
-                    return "Подключение...OK";
+                    return $"Пользователь:->{u.Name} Подключен к чату -> {Chat.Name}";
                 }
                 catch
                 {
@@ -30,29 +32,32 @@ namespace ChatMarchenkoIlya.Services
                 
             }
         }
-        public string AddChat(string NameChat,User usercreater)
+        public Chat AddChat(string NameChat,int userid)
         {
             using (ApplicationContext AC = new())
             {
+                User user = AC.Users.FirstOrDefault(x => x.Id == userid);
+
                 Chat findchat = new()
                 {
                     Name = NameChat,
                     Users = new List<User>()
                     {
-                        usercreater
+                        user
                     },                                 
                 };
-                AC.Chats.Update(findchat);            
+                AC.Chats.Add(findchat);            
                                        
                 try
                 {
                     AC.SaveChanges();
-                    return $"Вы создали и вошли в чат {findchat.Name}";
+                    findchat = AC.Chats.FirstOrDefault(x => x.Name == findchat.Name);
+                    return findchat;
                 }
                 catch
                 {
                     Console.WriteLine("Сейв не удался");
-                    return $"Что то пошло не так.";                    
+                    return findchat;                    
                 }               
             }
         }

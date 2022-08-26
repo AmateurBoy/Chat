@@ -56,3 +56,29 @@ body {
     margin-bottom: 60px;
     background: #333;
 }
+div.MyMessage {
+    float: right;
+    height: 50px;
+    width: 400px;
+    position: relative;
+    left:60%;
+}
+div.MyMessage {
+    
+    height: 50px;
+    width: 400px;
+    left:70%;
+    position:relative;
+}
+div.user-message{
+    width:80%;
+    scroll-behavior:auto;
+}
+div.input-div {
+    
+    text-align: center;
+    position: absolute  ;
+    
+    left: 35%;
+    top:80%;
+}
