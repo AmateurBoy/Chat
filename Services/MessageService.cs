@@ -38,9 +38,11 @@ namespace ChatMarchenkoIlya.Services
                 return chat;
             }
         }
-        public void DelMessage()
+        public void DelMessage(int mesgId)
         {
-
+            using (ApplicationContext AC = new())
+            { 
+            }
         }
     }
 }

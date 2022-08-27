@@ -31,19 +31,19 @@
                         Type T = Model.GetType();                        
                         if (T.Equals(typeof(Chat)))
                         {
-                            <h8 style="color:azure">@CookiesRecipient.getInstance().Name</h8>                              
+                                <h8 style="color:azure">@CookiesRecipient.getInstance().Name</h8>                              
                             }
                             else if (T.Equals(typeof(ChatMarchenkoIlya.Entitys.User)))
                             {
                                 CookiesRecipient.getInstance(Model.Name);
-                                <h8 style="color:azure">@Model.Name</h8>
+                                    <h8 style="color:azure">@Model.Name</h8>
                             }
                             else if (T.Equals(typeof(ChatMarchenkoIlya.Entitys.Message)))
                             {                               
-                            <h8 style="color:azure">@CookiesRecipient.getInstance().Name</h8>
+                                <h8 style="color:azure">@CookiesRecipient.getInstance().Name</h8>
                         }
                         else{
-                            <h8 style="color:azure">@us.GetUser(Model[1]).Name</h8>
+                                <h8 style="color:azure">@us.GetUser(Model[1]).Name</h8>
                         }
                     }
                     </div>
@@ -56,7 +56,7 @@
                 try{
                     if (Model[2] != null)
                     {
-                        <h1>@Model[2]</h1>
+                            <h1>@Model[2]</h1>
                     }
                 }
                 catch
@@ -74,7 +74,7 @@
                 <a class="nav-link" style="color:#ab68a8;margin-top:3%;" href="/CreateChat?UserId=@Model[1]"> Создать Чат </a>
             </div>
 
-            <div id="content">
+            <div id="content" style="text-align:center;">
                 <a class="nav-link" style="color:#ab68a8;margin-top:3%;" href="/SelectChekChat?UserId=@Model[1]">Добавить юзера в чат</a>
             </div>
 

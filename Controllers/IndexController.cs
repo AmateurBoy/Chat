@@ -13,7 +13,12 @@ namespace ChatMarchenkoIlya.Controllers
     [ApiController]
     public class IndexController : Controller
     {
-        
+        public  class obj 
+        {
+            public  int ChatId { get; set; }
+            public  int UserId { get; set; }
+    
+        };
         UserService userService=new();
         MessageService messageService = new();
         ChatService chatService = new();
@@ -45,26 +50,26 @@ namespace ChatMarchenkoIlya.Controllers
             obj.Add(GetCooki().Id);
             return View(@"Pages\Index.cshtml",obj);
         }
-        //[HTTPGET("/CONNECTCHAT")]
-        //PUBLIC IACTIONRESULT COMMECTCHAT(INT CHATID, INT USERID)
-        //{
-        //    //RETURN JSON(CHATSERVICE.CONNECTCHAT(CHATID, USERID));
-        //}
+        
         [HttpGet("/Message")]
-        public async Task<IActionResult> Message(int ChatId,int UserId)
+        public async Task<IActionResult> Message(int ChatId, int UserId)
         {
             List<Object> obj = new();
             obj.Add(chatService.GetChat(ChatId));
             obj.Add(UserId);
             return View(@"Pages\Message\MessagersPage.cshtml",obj);
         }
+        
         [HttpGet("/Seending")]
-        public IActionResult Seending(int ChatId, int UserId, string Text)
+        
+        public IActionResult Seending(string Text,int ChatId,int UserId)
         {
-            List<Object> obj = new();
-            obj.Add(messageService.CreateMessage(Text, UserId, ChatId));
-            obj.Add(UserId);
-            return View(@"Pages\Message\MessagersPage.cshtml", obj); 
+            obj obj = new();          
+            obj.ChatId=ChatId;
+            obj.UserId=UserId;
+            messageService.CreateMessage(Text, UserId, ChatId);
+            
+            return RedirectToAction("Message",obj); 
         }
         [HttpGet("/CreateChat")]
         public IActionResult CreateChat(int UserId)
@@ -83,6 +88,7 @@ namespace ChatMarchenkoIlya.Controllers
             return View(@"Pages/ChatWork/AddUserChat.cshtml",obj);
         }
         [HttpGet("/AddUserInChat")]
+        
         public IActionResult AddUserInChat(string UserName,int UserId,int ChatId)
         {
 
@@ -97,6 +103,14 @@ namespace ChatMarchenkoIlya.Controllers
         {
             List<Object> obj = new();
             obj.Add(chatService.AddChat(NameChat, UserID));
+            obj.Add(UserID);
+            return View(@"Pages\Message\MessagersPage.cshtml", obj);
+        }
+        [HttpGet("/AddChat")]
+        public IActionResult AddChatIsProvate(string NameChat, int UserID, string IsPrivate)
+        {
+            List<Object> obj = new();
+            obj.Add(chatService.AddChat(NameChat, UserID,true));
             obj.Add(UserID);
             return View(@"Pages\Message\MessagersPage.cshtml", obj);
         }

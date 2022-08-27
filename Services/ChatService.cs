@@ -18,14 +18,24 @@ namespace ChatMarchenkoIlya.Services
                     User  u = AC.Users.FirstOrDefault(x => x.Name == UserName);
                     
                     
-                        var Chat = AC.Chats.Include(x => x.Users).FirstOrDefault(x => x.Id == ChatID);                        
+                        var Chat = AC.Chats.Include(x => x.Users).FirstOrDefault(x => x.Id == ChatID);  
+                    
                         Chat.Users.Add(u);
-                        AC.Chats.Update(Chat);
-                    
-                        AC.SaveChanges();
                         
-                    
-                    return $"Пользователь:->{u.Name} Подключен к чату -> {Chat.Name}";
+                    if (Chat.IsPrivate == false)
+                    {
+                        AC.Chats.Update(Chat);
+                        AC.SaveChanges();
+                        return $"Пользователь:->{u.Name} Подключен к чату -> {Chat.Name}";
+                    }
+                    else
+                    {
+                        Chat.IsPrivate = false;
+                        AC.Chats.Update(Chat);
+                        AC.SaveChanges();
+                        return $"Чат больше не приватный.{u.Name} Подключен к чату -> {Chat.Name}";
+                    }
+                        
                 }
                 catch
                 {
@@ -62,6 +72,36 @@ namespace ChatMarchenkoIlya.Services
                     Console.WriteLine("Сейв не удался");
                     return findchat;                    
                 }               
+            }
+        }
+        public Chat AddChat(string NameChat, int userid, bool IsPrivat)
+        {
+            using (ApplicationContext AC = new())
+            {
+                User user = AC.Users.FirstOrDefault(x => x.Id == userid);
+
+                Chat findchat = new()
+                {
+                    Name = NameChat,
+                    Users = new List<User>()
+                    {
+                        user
+                    },
+                    IsPrivate = IsPrivat,
+                };
+                AC.Chats.Add(findchat);
+
+                try
+                {
+                    AC.SaveChanges();
+                    findchat = AC.Chats.FirstOrDefault(x => x.Name == findchat.Name);
+                    return findchat;
+                }
+                catch
+                {
+                    Console.WriteLine("Сейв не удался");
+                    return findchat;
+                }
             }
         }
         public string ExitChat(User user,int IdChat)

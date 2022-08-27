@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = $"{Model[0].Name}";    
 }
-<divclass ="user-message" style="width:100%;height:100%;">
+<div class ="user-message" style="width:100%;height:100%;">
     <h1 >Message -> @Model[0].Name</h1>
     @{
         int userid = 0;
@@ -34,9 +34,9 @@
             }
         }        
     }
-</divclass>
+</div>
 <div class="input-div" style="width:100%;height:10%;">
-    <form action="/Seending" method="get">
+    <form action="~/Seending" method="get">
         <input id="textinput" style="width:60%;height:150px;background:#334;" type="text" name="Text" />
         <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
         <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
