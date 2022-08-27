@@ -10,19 +10,23 @@
         {
             foreach (Message mesg in Model[0].Messages)
             {
-                if (mesg.User.Id == Model[1])
+                if (mesg.User.Id == Model[1]&&mesg.IsDisplay==false)
                 {
-                    <div style="text-align:end;">
-                        <div class="mesg" style="margin:2%;">
-                            <h4>@mesg.User.Name</h4>
-                            <h5>@mesg.Text</h5>
-                            <h6>@mesg.dateTime</h6>
+                     <div style="text-align:end;">
+                                                
+                            <div class="mesg" style="margin:2%;">
+                            <div style=" position:relative; right:15%; bottom:100%;">Rederect</div>
+                                <h4>@mesg.User.Name</h4>
+                                <h5>@mesg.Text</h5>
+                                <h6>@mesg.dateTime</h6>
+                            <div style=" position:relative; right:15%;">Edit</div><div>Del</div>
+                                                    
+                            </div>
+                                                 
                         </div>
-                    </div>
                 }                
                 else
                 {
-
                     <div style="text-align:start;">
                         <div class="mesg" style="margin:2%;">
                             <h4>@mesg.User.Name</h4>
@@ -31,17 +35,18 @@
                         </div>
                     </div>
                 }
-            }
-        }        
+                
+            }        
+         }
     }
-</div>
-<div class="input-div" style="width:100%;height:10%;">
-    <form action="~/Seending" method="get">
-        <input id="textinput" style="width:60%;height:150px;background:#334;" type="text" name="Text" />
-        <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
-        <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
-        <button type="submit" style="background:#333;">
-            <img src="/img/Seend.png" height="25" />
-        </button>
-    </form>
-</div>
+    </div>
+    <div class="input-div" style="width:100%;height:10%;">
+        <form action="~/Seending" method="get">
+            <input id="textinput" style="width:60%;height:150px;background:#334;" type="text" name="Text" />
+            <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
+            <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
+            <button type="submit" style="background:#333;">
+                <img src="/img/Seend.png" height="25" />
+            </button>
+        </form>
+    </div>

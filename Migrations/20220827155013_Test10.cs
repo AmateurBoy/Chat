@@ -4,13 +4,13 @@
 
 namespace ChatMarchenkoIlya.Migrations
 {
-    public partial class Test9 : Migration
+    public partial class Test10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsPrivate",
-                table: "Chats",
+                name: "IsDisplay",
+                table: "Messages",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
@@ -19,8 +19,8 @@ namespace ChatMarchenkoIlya.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsPrivate",
-                table: "Chats");
+                name: "IsDisplay",
+                table: "Messages");
         }
     }
 }

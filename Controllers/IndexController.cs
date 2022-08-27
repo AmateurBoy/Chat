@@ -55,7 +55,10 @@ namespace ChatMarchenkoIlya.Controllers
         public async Task<IActionResult> Message(int ChatId, int UserId)
         {
             List<Object> obj = new();
-            obj.Add(chatService.GetChat(ChatId));
+            Chat Ch = chatService.GetChat(ChatId);
+            List<Message> C = Ch.Messages.OrderBy(x=>x.dateTime).ToList();
+            Ch.Messages = C;
+            obj.Add(Ch);
             obj.Add(UserId);
             return View(@"Pages\Message\MessagersPage.cshtml",obj);
         }
@@ -102,18 +105,17 @@ namespace ChatMarchenkoIlya.Controllers
         public IActionResult AddChat(string NameChat, int UserID)
         {
             List<Object> obj = new();
-            obj.Add(chatService.AddChat(NameChat, UserID));
+            bool IsPrivate = false;
+            if (Request.Query.FirstOrDefault(x => x.Key == "IsPrivate").Value=="on")
+            {
+                IsPrivate = true;
+            }
+           
+            obj.Add(chatService.AddChat(NameChat, UserID,IsPrivate));
             obj.Add(UserID);
             return View(@"Pages\Message\MessagersPage.cshtml", obj);
         }
-        [HttpGet("/AddChat")]
-        public IActionResult AddChatIsProvate(string NameChat, int UserID, string IsPrivate)
-        {
-            List<Object> obj = new();
-            obj.Add(chatService.AddChat(NameChat, UserID,true));
-            obj.Add(UserID);
-            return View(@"Pages\Message\MessagersPage.cshtml", obj);
-        }
+        
         [HttpGet("/Chat")]
         public IActionResult Chat(int UserID)
         {            

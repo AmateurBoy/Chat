@@ -63,6 +63,7 @@ div.MyMessage {
     width: 400px;
     position: relative;
     left:60%;
+    
 }
 div.MyMessage {
     
@@ -71,6 +72,9 @@ div.MyMessage {
     left:70%;
     position:relative;
 }
+
+
+
 div.user-message {
     width: 80%;
     scroll-behavior: auto;

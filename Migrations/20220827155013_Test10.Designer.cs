@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatMarchenkoIlya.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220827090520_Test8")]
-    partial class Test8
+    [Migration("20220827155013_Test10")]
+    partial class Test10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,9 @@ namespace ChatMarchenkoIlya.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -48,6 +51,9 @@ namespace ChatMarchenkoIlya.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsDisplay")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .IsRequired()
