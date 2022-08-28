@@ -53,6 +53,9 @@ namespace ChatMarchenkoIlya.Migrations
                     b.Property<bool>("IsDisplay")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("Reply")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

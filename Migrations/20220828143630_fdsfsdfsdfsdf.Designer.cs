@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatMarchenkoIlya.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220827155013_Test10")]
-    partial class Test10
+    [Migration("20220828143630_fdsfsdfsdfsdf")]
+    partial class fdsfsdfsdfsdf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,6 +53,9 @@ namespace ChatMarchenkoIlya.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("IsDisplay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Reply")
                         .HasColumnType("bit");
 
                     b.Property<string>("Text")

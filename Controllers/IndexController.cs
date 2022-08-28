@@ -1,12 +1,14 @@
 ﻿using ChatMarchenkoIlya.Data;
 using ChatMarchenkoIlya.Entitys;
-using ChatMarchenkoIlya.Interfaces;
+
 using ChatMarchenkoIlya.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
+using static ChatMarchenkoIlya.Controllers.IndexController;
+using System.Collections.Generic;
 
 namespace ChatMarchenkoIlya.Controllers
 {
@@ -15,40 +17,6 @@ namespace ChatMarchenkoIlya.Controllers
     [ApiController]
     public class IndexController : Controller
     {
-        [HttpGet("/afafasfassagasgagasgasgasgsaga")]
-        public User GetCooki()
-        {
-
-            User user = new();
-            if (Request.Cookies.ContainsKey("User"))
-            {
-                user = userService.GetUser(int.Parse(Request.Cookies["User"]));
-                Response.Cookies.Append("countmsg", $"20");
-            }
-            else
-            {
-                user = userService.Registers(user);
-                Response.Cookies.Append("User", $"{user.Id}");
-            }
-
-            return user;
-        }
-        [HttpGet("/SetCookiCountMeg")]
-        public IActionResult SetCookiCountMeg(int count, int UserId, int ChatId)
-        {
-            if (Request.Cookies.ContainsKey("countmsg"))
-            {
-                int a = int.Parse(Request.Cookies["countmsg"]);
-                count += a;
-                Response.Cookies.Append("countmsg", $"{count}");
-            }
-            else
-                Response.Cookies.Append("countmsg", $"{count}");
-            obj obj = new();
-            obj.ChatId = ChatId;
-            obj.UserId = UserId;
-            return RedirectToAction("Message", obj);
-        }
         public class obj
         {
             public int ChatId { get; set; }
@@ -59,12 +27,80 @@ namespace ChatMarchenkoIlya.Controllers
         MessageService messageService = new();
         ChatService chatService = new();
 
+        [HttpGet("/NotRequested")]
+        public User GetCooki()
+        {
+
+            User user = new();
+            if (Request.Cookies.ContainsKey("User"))
+            {
+                user = userService.GetUser(int.Parse(Request.Cookies["User"]));
+                if(user==null)
+                {
+                    user = new User();
+                    user.Id = 0;
+                    user = userService.Registers(user);
+                    Response.Cookies.Append("User", $"{user.Id}");
+                }
+                Response.Cookies.Append("minLimit", $"0");
+                Response.Cookies.Append("maxLimit", $"21");
+            }
+            else
+            {
+                user = userService.Registers(user);
+                Response.Cookies.Append("User", $"{user.Id}");
+            }
+
+            return user;
+        }
+        [HttpGet("/UpdateCount")]
+        public IActionResult SetCookiCountMeg(string IsUp,int UserId, int ChatId)
+        {
+            int maxLimitcount = int.Parse(Request.Cookies["maxLimit"]);            
+            int minLimitcount = int.Parse(Request.Cookies["minLimit"]);            
+            int count = 21;
+            int maxcount = chatService.GetChat(ChatId).Messages.Count;
+            if(IsUp=="Yes")
+                {
+                    if(minLimitcount-count > 0)
+                    {
+                        minLimitcount -= count;
+                        maxLimitcount -= count;
+                    }
+                    else
+                    {
+                        minLimitcount = 0;
+                        maxLimitcount = 21;
+                    }
+                }
+            else
+                {
+                    if((maxLimitcount+count)<maxcount)
+                    {
+                        maxLimitcount += count;
+                        minLimitcount += count;
+                    }
+                    else
+                    {
+                        maxLimitcount = maxcount;
+                        minLimitcount = maxcount - 21;
+                    }    
+                }
+            Response.Cookies.Append("maxLimit", $"{maxLimitcount}");
+            Response.Cookies.Append("minLimit", $"{minLimitcount}");
+            obj obj = new();
+            obj.ChatId = ChatId;
+            obj.UserId = UserId;
+            return RedirectToAction("Message", obj);
+            
+        }
+        
 
 
         [HttpGet("/")]
         public IActionResult Index()
         {
-
+            
             List<Object> obj = new();
             obj.Add(GetCooki());
             obj.Add(GetCooki().Id);
@@ -74,15 +110,20 @@ namespace ChatMarchenkoIlya.Controllers
         [HttpGet("/Message")]
         public IActionResult Message(int ChatId, int UserId)
         {
-            var count = 5;
-            if (Request.Cookies.ContainsKey("countmsg"))
+            var max = 0;
+            var min = 21;
+            if (Request.Cookies.ContainsKey("minLimit"))
             {
-                count = int.Parse(Request.Cookies["countmsg"]);
+                min = int.Parse(Request.Cookies["minLimit"]);
+            }
+            if (Request.Cookies.ContainsKey("maxLimit"))
+            {
+                max = int.Parse(Request.Cookies["maxLimit"]);
             }
 
             List<Object> obj = new();
             Chat Ch = chatService.GetChat(ChatId);
-            List<Message> C = Ch.Messages.TakeLast(count).OrderBy(x => x.dateTime).ToList();
+            List<Message> C = Ch.Messages.Where((o, index) => index >= min & index <= max).OrderBy(x => x.dateTime).ToList();
             Ch.Messages = C;
             obj.Add(Ch);
             obj.Add(UserId);
@@ -92,11 +133,22 @@ namespace ChatMarchenkoIlya.Controllers
         [HttpGet("/Seending")]
         public IActionResult Seending(string Text, int ChatId, int UserId)
         {
+            var max = chatService.GetChat(ChatId).Messages.Count+1;
+            var min = 0;
+            if (max - 21>=0)
+            {
+                min = max - 21;
+            }
+            else
+            {
+                min = 0;
+            }
             obj obj = new();
             obj.ChatId = ChatId;
             obj.UserId = UserId;
             messageService.CreateMessage(Text, UserId, ChatId);
-
+            Response.Cookies.Append("maxLimit", $"{max}");
+            Response.Cookies.Append("minLimit", $"{min}");
             return RedirectToAction("Message", obj);
         }
         [HttpGet("/CreateChat")]
@@ -187,12 +239,35 @@ namespace ChatMarchenkoIlya.Controllers
             return RedirectToAction("Message", obj);
         }
         [HttpGet("/ReplyPublic")]
-        public IActionResult ReplyAll(int UserId, int ChatId, int msgId)
+        public async Task<IActionResult> ReplyPublic(int UserId, int ChatId, int msgId)
         {
-            return View(@"Pages/Message/ReplyMessage.cshtml");
+            List<Object> obj = new();
+            
+            Chat chat = await Task.Run(() => chatService.GetChat(ChatId));
+            Message Msg = await Task.Run(() => messageService.GetMessage(msgId));
+            
+            obj.Add(chat);
+            obj.Add(UserId);
+            obj.Add(Msg);           
+            return View(@"Pages/Message/ReplyMessage.cshtml",obj);
+        }
+        [HttpGet("/ReplyPublicResult")]
+        public async Task<IActionResult> ReplyPublicResult(int UserId, int ChatId, int msgId, string Text)
+        {
+            string Temp = "";
+            obj obj = new();
+            User user = await Task.Run(() => userService.GetUser(UserId));
+            Message Msg = await Task.Run(() => messageService.GetMessage(msgId));
+            Temp = Msg.Text;                        
+            Msg.Text = $"{Temp}==>{Text}";
+            obj.ChatId=ChatId;
+            obj.UserId = UserId;
+            await Task.Run(() => messageService.CreateMessageReply(Msg.Text, UserId, ChatId));
+            
+            return RedirectToAction(@"Message", obj);
         }
         [HttpGet("/ReplyPrivat")]
-        public async Task<IActionResult> ReplyPriv(int UserId,int msgId)
+        public async Task<IActionResult> ReplyPrivate(int UserId,int msgId)
         {
             List<Object> objl = new();
             User user = await Task.Run(() => userService.GetUser(UserId));
@@ -200,7 +275,7 @@ namespace ChatMarchenkoIlya.Controllers
             Chat c = await Task.Run(() => chatService.AddChat($"{Msg.User.Name}||{user.Name}", UserId, Msg.User, true));
             if(c.Messages==null)
             {
-                c = await Task.Run(() => chatService.AddMessageChat(c, Msg));
+                c = await Task.Run(() => chatService.AddMessageChat(c.Id, Msg));
             }            
             objl.Add(c);
             objl.Add(UserId);

@@ -1,6 +1,6 @@
 ﻿using ChatMarchenkoIlya.Data;
 using ChatMarchenkoIlya.Entitys;
-using ChatMarchenkoIlya.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -33,6 +33,29 @@ namespace ChatMarchenkoIlya.Services
                     }
                 };  
                 
+                AC.Messages.Add(Mesg);
+                AC.SaveChanges();
+                return chat;
+            }
+        }
+        public Chat CreateMessageReply(string Text, int UserId, int ChatId)
+        {
+            using (ApplicationContext AC = new())
+            {
+                Chat chat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == ChatId);
+
+                Message Mesg = new()
+                {
+                    Text = Text,
+                    Reply = true,
+                    dateTime = DateTime.Now,
+                    User = AC.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == UserId),
+                    Chat = new List<Chat>()
+                    {
+                        chat
+                    }
+                };
+
                 AC.Messages.Add(Mesg);
                 AC.SaveChanges();
                 return chat;

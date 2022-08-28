@@ -1,6 +1,6 @@
 ﻿using ChatMarchenkoIlya.Data;
 using ChatMarchenkoIlya.Entitys;
-using ChatMarchenkoIlya.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 
@@ -19,7 +19,7 @@ namespace ChatMarchenkoIlya.Services
                 if (AC.Users.FirstOrDefault(x => x.Id == user.Id) == null)
                 {
                     user.Name = $"User{random.Next(000000, 999999)}";
-                    Chat findchat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == 8);
+                    Chat findchat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == 29);
                     findchat.Users.Add(user);
                     AC.Users.Add(user);
                     AC.Chats.Update(findchat);                    

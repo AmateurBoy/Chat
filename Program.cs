@@ -35,7 +35,7 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<ChatHub>("/chat");
+    
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Index}/{action=Index}");

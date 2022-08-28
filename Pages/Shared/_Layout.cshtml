@@ -29,7 +29,7 @@
                     @{
                         UserService us = new();
                         
-                                    <h8 style="color:azure">@us.GetUser(Model[1]).Name</h8>
+                                        <h8 style="color:azure">@us.GetUser(Model[1]).Name</h8>
                         
                     }
                     </div>
@@ -40,10 +40,10 @@
         <main role="main" class="pb-3">
             @{
                 try{
-                    if (Model[2] != null)
-                    {
-                                <h1>@Model[2]</h1>
-                    }
+                    //if (Model[2] != null)
+                    //{
+                    //            <h1>@Model[2]</h1>
+                    //}
                 }
                 catch
                 {
@@ -52,6 +52,7 @@
             }            
             @RenderBody()
         </main>
+        
     </div>
     <footer class="border-top footer text-light" style="position:absolute;">
         <div id="container">

@@ -1,7 +1,7 @@
 ﻿using ChatMarchenkoIlya.Data;
 using ChatMarchenkoIlya.Data.DTO;
 using ChatMarchenkoIlya.Entitys;
-using ChatMarchenkoIlya.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatMarchenkoIlya.Services
@@ -196,13 +196,14 @@ namespace ChatMarchenkoIlya.Services
                     
             }
         }
-        public Chat AddMessageChat(Chat chat, Message msg)
+        public Chat AddMessageChat(int chatid, Message msg)
         {
             using (ApplicationContext AC = new())
             {
                 List<Message> msgl = new();
                 msgl.Add(msg);
-                chat.Messages= msgl;                
+                Chat chat = GetChat(chatid);
+                chat.Messages = msgl;
                 AC.Update(chat);
                 AC.SaveChanges();
                 return chat;

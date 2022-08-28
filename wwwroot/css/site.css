@@ -76,12 +76,12 @@ div.MyMessage {
 
 
 div.user-message {
-    width: 80%;
+    
     scroll-behavior: auto;
     word-wrap: break-word;
 }
-div.input-div {
-    
-    position: absolute;   
+div.block4 {
+    margin: 40px;
+    text-align: center;
     
 }
