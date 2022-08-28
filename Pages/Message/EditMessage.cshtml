@@ -1,10 +1,11 @@
 ﻿@{
+    ViewData["Title"] = "Edit";
 }
-<h5>Ответ в чат:</h5>
-<h6>Ответить на: </h6>
-<div>
+<h3>Редактирование сообщения.</h3>
+
+<div class="input-div">
     <form action="~/EditMessage" method="get">
-        <input id="textinput" style="width:60%;height:150px;background:#334; color:whitesmoke" type="text" name="Text" value="@Model[3]" />
+        <input id="textinput" style="width:60%;height:150px;background:#334;" type="text" name="Text" value="@Model[3]" />
         <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[4] />
         <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
         <input id="msgid" style="display:none" type="text" name="MsgId" value=@Model[2] />

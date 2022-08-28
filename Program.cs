@@ -5,12 +5,16 @@ using System.Web;
 using System.Drawing;
 using Microsoft.Net.Http.Headers;
 using ChatMarchenkoIlya.Services;
+using ChatMarchenkoIlya.Controllers;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 //
 var app = builder.Build();
 
@@ -22,17 +26,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
+app.UseDeveloperExceptionPage();
+app.UseDefaultFiles();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapRazorPages();
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapHub<ChatHub>("/chat");
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Index}/{action=Index}");

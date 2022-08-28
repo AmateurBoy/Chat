@@ -12,7 +12,7 @@ namespace ChatMarchenkoIlya.Services
         {
             using (ApplicationContext AC = new())
             {
-                return AC.Messages.FirstOrDefault(x => x.Id == mesgId);
+                return AC.Messages.Include(x => x.User).FirstOrDefault(x => x.Id == mesgId);
             }
 
         }
@@ -60,7 +60,9 @@ namespace ChatMarchenkoIlya.Services
             {
                 try
                 {
-                    AC.Update(AC.Messages.FirstOrDefault(x => x.Id == mesgId).IsDisplay=true);
+                    Message msg = AC.Messages.FirstOrDefault(x => x.Id == mesgId);
+                    msg.IsDisplay = true;
+                    AC.Update(msg);
                     AC.SaveChanges();
                 }
                 catch
@@ -74,7 +76,9 @@ namespace ChatMarchenkoIlya.Services
         {
             using (ApplicationContext AC = new())
             {
-                AC.Update(AC.Messages.FirstOrDefault(x => x.Id == mesgId).Text = Text);
+                Message Msg = AC.Messages.FirstOrDefault(x => x.Id == mesgId);
+                Msg.Text = Text;
+                AC.Update(Msg);
                 AC.SaveChanges();
             }
         }

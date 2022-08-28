@@ -1,10 +1,11 @@
 ﻿@using ChatMarchenkoIlya.Entitys
 @{
-    ViewData["Title"] = $"{Model[0].Name}";    
+    ViewData["Title"] = $"{Model[0].Name}";
 }
 <div class ="user-message" style="width:100%;height:100%;">
-    <h1 >Message -> @Model[0].Name</h1>
-    @{
+    <h1 style="text-align:center;">@Model[0].Name</h1>
+    <a class="nav-link" style="text-align:center;" href="/SetCookiCountMeg?count=20&UserId=@Model[1]&ChatId=@Model[0].Id"><h4>Более ранние сообщения</h4></a>
+        @{
         int userid = 0;
         if (Model[0].Messages!=null)
         {
@@ -12,41 +13,45 @@
             {
                 if (mesg.User.Id == Model[1]&&mesg.IsDisplay==false)
                 {
-                     <div style="text-align:end;">
-                                                
-                            <div class="mesg" style="margin:2%;">
-                            <div style=" position:relative; right:15%; bottom:100%;">Rederect</div>
+                        <div style="text-align:end; ">
+                            <div class="mesg" style="margin:2%;background: #474747; ">
                                 <h4>@mesg.User.Name</h4>
                                 <h5>@mesg.Text</h5>
-                                <h6>@mesg.dateTime</h6>
-                            <div style=" position:relative; right:15%;">Edit</div><div>Del</div>
-                                                    
-                            </div>
-                                                 
-                        </div>
+                                <h6>@mesg.dateTime</h6>                            
+                                <a class="nav-link" href="/PageEditMessage?UserId=@mesg.User.Id&ChatId=@Model[0].Id&MsgId=@mesg.Id&Text=@mesg.Text">Изменить</a>
+                                <a class="nav-link" href="/DelMe?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для себя</a>
+                                <a class="nav-link" href="/DelAll?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для всех</a>
+                                
+                            </div>                        
+                        </div>                        
                 }                
                 else
-                {
-                    <div style="text-align:start;">
-                        <div class="mesg" style="margin:2%;">
-                            <h4>@mesg.User.Name</h4>
-                            <h5>@mesg.Text</h5>
-                            <h6>@mesg.dateTime</h6>
+                {                    
+                        <div style="text-align:start;">
+                            <div class="mesg" style="margin:2%;">
+                                <div style="background: #474747;">
+                                    <a href="/ReplyPrivat?UserId=@Model[1]&msgId=@mesg.Id">Ответить в личный чат</a>
+                                    <a>Ответить в этот чат</a>
+                                    <h4>@mesg.User.Name</h4>
+                                    <h5>@mesg.Text</h5>
+                                    <h6>@mesg.dateTime</h6>
+                                </div>                           
+                            </div>
                         </div>
-                    </div>
                 }
                 
             }        
          }
-    }
-    </div>
-    <div class="input-div" style="width:100%;height:10%;">
-        <form action="~/Seending" method="get">
-            <input id="textinput" style="width:60%;height:150px;background:#334;" type="text" name="Text" />
-            <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
-            <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
-            <button type="submit" style="background:#333;">
-                <img src="/img/Seend.png" height="25" />
-            </button>
-        </form>
-    </div>
+        }
+        
+        </div>
+        <div>
+            <form action="~/Seending" method="get">
+                <input id="textinput" style="width:60%;background:#334;" type="text" name="Text" />
+                <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
+                <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
+                <button type="submit" style="background:#333;">
+                    <img src="/img/Seend.png" height="25" />
+                </button>
+            </form>
+        </div>

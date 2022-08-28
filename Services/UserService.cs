@@ -40,7 +40,7 @@ namespace ChatMarchenkoIlya.Services
                 return users;
             }
         }
-        public User GetUser(int id)
+        public  User GetUser(int id)
         {
             using (ApplicationContext AC = new())
             {

@@ -86,22 +86,74 @@ namespace ChatMarchenkoIlya.Services
                     Users = new List<User>()
                     {
                         user
+                        
                     },
                     IsPrivate = IsPrivat,
                 };
-                AC.Chats.Add(findchat);
+                Chat chat = AC.Chats.FirstOrDefault(x => x.Name == NameChat);
+                if (chat==null)
+                {                    
+                    AC.Chats.Add(findchat);
+                    try
+                    {
+                        AC.SaveChanges();
+                        findchat = AC.Chats.FirstOrDefault(x => x.Name == findchat.Name);
+                        return findchat;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Сейв не удался");
+                        return findchat;
+                    }
+                }
+                else
+                {
+                    return GetChat(chat.Id);
+                }
+                
 
-                try
+                
+            }
+        }
+        public Chat AddChat(string NameChat, int userid, User user2, bool IsPrivat)
+        {
+            using (ApplicationContext AC = new())
+            {
+                User user = AC.Users.FirstOrDefault(x => x.Id == userid);
+
+                Chat findchat = new()
                 {
-                    AC.SaveChanges();
-                    findchat = AC.Chats.FirstOrDefault(x => x.Name == findchat.Name);
-                    return findchat;
-                }
-                catch
+                    Name = NameChat,
+                    Users = new List<User>()
+                    {
+                        user,
+                        user2
+                    },
+                    IsPrivate = IsPrivat,
+                };
+                Chat chat = AC.Chats.FirstOrDefault(x => x.Name == NameChat);
+                if (chat == null)
                 {
-                    Console.WriteLine("Сейв не удался");
-                    return findchat;
+                    AC.Chats.Add(findchat);
+                    try
+                    {
+                        AC.SaveChanges();
+                        findchat = AC.Chats.FirstOrDefault(x => x.Name == findchat.Name);
+                        return findchat;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Сейв не удался");
+                        return findchat;
+                    }
                 }
+                else
+                {
+                    return GetChat(chat.Id);
+                }
+
+
+
             }
         }
         public string ExitChat(User user,int IdChat)
@@ -137,53 +189,24 @@ namespace ChatMarchenkoIlya.Services
         {
             using (ApplicationContext AC = new())
             {
-                return AC.Chats.Include(x=> x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == ChatID);
+                return AC.Chats
+                    .Include(x => x.Messages)
+                    .Include(x => x.Users)
+                    .FirstOrDefault(x => x.Id == ChatID);
+                    
             }
         }
-        public List<ChatDTO> GetChatUser(User user)
+        public Chat AddMessageChat(Chat chat, Message msg)
         {
             using (ApplicationContext AC = new())
             {
-                int count = 0;
-                var ChatUsers = AC.Chats.Include(x => x.Users).ToList()
-                    .Where(x => x.Users.OrderBy(x => x.Id == user.Id) != null);
-                    
-
-                var Test = AC.Chats.Include(x => x.Users).ToList()
-                    .OrderBy(x=> x.Users.OrderBy(x=>x.Id==user.Id));
-
-
-                var ChatDel = AC.Chats.Include(x => x.Users).Where(x => x.Users.Count == 0);
-                if(ChatDel!=null)
-                {
-                    AC.Chats.RemoveRange(ChatDel);
-                    AC.SaveChanges();
-                }
-                
-                List <ChatDTO> chatDTOs = new List<ChatDTO>();
-                foreach (var chat in ChatUsers.ToList())
-                {
-                    
-                        List<string> Name = new List<string>();
-                        List<int> Id = new List<int>();
-                        foreach (var item in chat.Users)
-                        {
-                            Name.Add(item.Name);
-                            Id.Add(item.Id);
-                        }
-                        ChatDTO CDTO = new()
-                        {
-                            Id = chat.Id,
-                            NameChat = chat.Name,
-                            NameUser = Name,
-                            UserId = Id
-                        };
-                        chatDTOs.Add(CDTO);
-                    
-                }
-                
-                return chatDTOs;
-            }            
+                List<Message> msgl = new();
+                msgl.Add(msg);
+                chat.Messages= msgl;                
+                AC.Update(chat);
+                AC.SaveChanges();
+                return chat;
+            }
         }
         public List<Message> GetChatMessages(Chat Chat)
         {
