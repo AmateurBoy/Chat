@@ -16,31 +16,31 @@
                         
                     if(mesg.Reply==false)
                     {
-                                <div style="text-align:end; ">
-                                    <div class="mesg" style="margin:2%;background: #474747; ">
-                                        <h4>@mesg.User.Name</h4>
-                                        <h5>@mesg.Text</h5>
-                                        <h6>@mesg.dateTime</h6>
-                                        <a class="nav-link" href="/PageEditMessage?UserId=@mesg.User.Id&ChatId=@Model[0].Id&MsgId=@mesg.Id&Text=@mesg.Text">Изменить</a>
-                                        <a class="nav-link" href="/DelMe?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для себя</a>
-                                        <a class="nav-link" href="/DelAll?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для всех</a>
+                                    <div style="text-align:end; ">
+                                        <div class="mesg" style="margin:2%;background: #474747; ">
+                                            <a class="nav-link" href="/PageEditMessage?UserId=@mesg.User.Id&ChatId=@Model[0].Id&MsgId=@mesg.Id&Text=@mesg.Text">Изменить</a>
+                                            <h4>@mesg.User.Name</h4>
+                                            <h5>@mesg.Text</h5>
+                                            <h6>@mesg.dateTime</h6>                                            
+                                            <a class="nav-link" href="/DelMe?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для себя</a>
+                                            <a class="nav-link" href="/DelAll?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для всех</a>
 
+                                        </div>
                                     </div>
-                                </div>
                     }
                     else
                     {
-                                <div style="text-align:end; ">
-                                    <div class="mesg" style="margin:2%;background: #474747; ">
-                                        <h4>Пользователь:@mesg.User.Name,ответил на сообщение:</h4>                                
-                                        <h5>=====================================</h5>
-                                        <h5>@mesg.Text</h5>
-                                        <h6>@mesg.dateTime</h6>
-                                        <a class="nav-link" href="/PageEditMessage?UserId=@mesg.User.Id&ChatId=@Model[0].Id&MsgId=@mesg.Id&Text=@mesg.Text">Изменить</a>
-                                        <a class="nav-link" href="/DelMe?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для себя</a>
-                                        <a class="nav-link" href="/DelAll?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для всех</a>
+                                    <div style="text-align:end; ">
+                                        <div class="mesg" style="margin:2%;background: #474747; ">
+                                            <h4>Пользователь:@mesg.User.Name,ответил на сообщение:</h4>                                
+                                            <h5>=====================================</h5>
+                                            <h5>@mesg.Text</h5>
+                                            <h6>@mesg.dateTime</h6>
+                                            <a class="nav-link" href="/PageEditMessage?UserId=@mesg.User.Id&ChatId=@Model[0].Id&MsgId=@mesg.Id&Text=@mesg.Text">Изменить</a>
+                                            <a class="nav-link" href="/DelMe?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для себя</a>
+                                            <a class="nav-link" href="/DelAll?UserId=@mesg.User.Id&ChatId=@Model[0].Id&msgId=@mesg.Id">Удалить для всех</a>
+                                        </div>
                                     </div>
-                                </div>
                     }
                 }                
                 else
@@ -49,17 +49,17 @@
                     {
                         if (mesg.User.Id != Model[1])
                         {
-                            <div style="text-align:start;">
-                                <div class="mesg" style="margin:2%;">
-                                    <div style="background: #474747;">
-                                        <a href="/ReplyPrivat?UserId=@Model[1]&msgId=@mesg.Id">Ответить в личный чат</a>
-                                        <a href="/ReplyPublic?UserId=@Model[1]&ChatId=@Model[0].Id&msgId=@mesg.Id">Ответить в этот чат</a>
-                                        <h4>@mesg.User.Name</h4>
-                                        <h5>@mesg.Text</h5>
-                                        <h6>@mesg.dateTime</h6>
+                                <div style="text-align:start;">
+                                    <div class="mesg" style="margin:2%;">
+                                        <div style="background: #474747;">
+                                            <a class="nav-link" href="/ReplyPrivat?UserId=@Model[1]&msgId=@mesg.Id">Ответить в личный чат</a>
+                                            <a class="nav-link" href="/ReplyPublic?UserId=@Model[1]&ChatId=@Model[0].Id&msgId=@mesg.Id">Ответить в этот чат</a>
+                                            <h4>@mesg.User.Name</h4>
+                                            <h5>@mesg.Text</h5>
+                                            <h6>@mesg.dateTime</h6>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
                         }
                         else
@@ -70,16 +70,16 @@
                     }
                     else
                     {
-                                <div style="text-align:sta; ">
-                                    <div class="mesg" style="margin:2%;background: #474747; ">
-                                        <a href="/ReplyPrivat?UserId=@Model[1]&msgId=@mesg.Id">Ответить в личный чат</a>
-                                        <a href="/ReplyPublic?UserId=@Model[1]&ChatId=@Model[0].Id&msgId=@mesg.Id">Ответить в этот чат</a>
-                                        <h3>Пользователю:@mesg.User.Name,ответил на сообщение:</h3>                                
-                                        <h5>=====================================</h5>
-                                        <h5>@mesg.Text</h5>
-                                        <h6>@mesg.dateTime</h6>                                
+                                    <div style="text-align:sta; ">
+                                        <div class="mesg" style="margin:2%;background: #474747; ">
+                                            <a class="nav-link" href="/ReplyPrivat?UserId=@Model[1]&msgId=@mesg.Id">Ответить в личный чат</a>
+                                            <a class="nav-link" href="/ReplyPublic?UserId=@Model[1]&ChatId=@Model[0].Id&msgId=@mesg.Id">Ответить в этот чат</a>
+                                            <h3>Пользователю:@mesg.User.Name,ответил на сообщение:</h3>                                
+                                            <h5>=====================================</h5>
+                                            <h5>@mesg.Text</h5>
+                                            <h6>@mesg.dateTime</h6>                                
+                                        </div>
                                     </div>
-                                </div>
                     }
                 }
                 
@@ -91,7 +91,7 @@
 
     <div class="block4">
         <form action="/Seending" method="get">
-            <input id="textinput" style="width:80%;height:65px;background:#334;" type="text" name="Text" />
+            <input id="textinput" style="width:80%;height:65px;background:#334; color:beige;" type="text" name="Text" />
             <input id="Chatid" style="display:none" type="text" name="ChatId" value=@Model[0].Id />
             <input id="Userid" style="display:none" type="text" name="UserId" value=@Model[1] />
             <button type="submit" style="background:#333;">

@@ -9,6 +9,8 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
 using static ChatMarchenkoIlya.Controllers.IndexController;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatMarchenkoIlya.Controllers
 {
@@ -30,7 +32,8 @@ namespace ChatMarchenkoIlya.Controllers
         [HttpGet("/NotRequested")]
         public User GetCooki()
         {
-
+            Response.Cookies.Append("minLimit", $"0");
+            Response.Cookies.Append("maxLimit", $"21");
             User user = new();
             if (Request.Cookies.ContainsKey("User"))
             {
@@ -42,8 +45,7 @@ namespace ChatMarchenkoIlya.Controllers
                     user = userService.Registers(user);
                     Response.Cookies.Append("User", $"{user.Id}");
                 }
-                Response.Cookies.Append("minLimit", $"0");
-                Response.Cookies.Append("maxLimit", $"21");
+                
             }
             else
             {
@@ -270,13 +272,34 @@ namespace ChatMarchenkoIlya.Controllers
         public async Task<IActionResult> ReplyPrivate(int UserId,int msgId)
         {
             List<Object> objl = new();
-            User user = await Task.Run(() => userService.GetUser(UserId));
-            Message Msg = await Task.Run(() => messageService.GetMessage(msgId));
-            Chat c = await Task.Run(() => chatService.AddChat($"{Msg.User.Name}||{user.Name}", UserId, Msg.User, true));
-            if(c.Messages==null)
+            
+            Chat c = new Chat();            
+            using (ApplicationContext AC = new ApplicationContext())
             {
-                c = await Task.Run(() => chatService.AddMessageChat(c.Id, Msg));
-            }            
+                User user = AC.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == UserId); 
+                Message Msg = AC.Messages.Include(x => x.User).FirstOrDefault(x => x.Id == msgId);
+
+                c.Name = $"{Msg.User.Name}||{user.Name}";
+                c.IsPrivate = true;
+                c.Users = new List<User>();
+                c.Users.Add(user);
+                c.Users.Add(Msg.User);
+                if(AC.Chats.FirstOrDefault(x=>x.Name==c.Name)==null)
+                {
+                    AC.Chats.Add(c);
+                    AC.SaveChanges();
+                }
+                if (c.Messages == null)
+                {
+                    c.Messages = new List<Message>();
+                    c.Messages.Add(Msg);
+                    AC.Update(c);
+                    AC.SaveChanges();
+                }
+
+            }          
+
+                       
             objl.Add(c);
             objl.Add(UserId);
             return View(@"Pages\Message\MessagersPage.cshtml", objl);

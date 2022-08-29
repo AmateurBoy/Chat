@@ -89,7 +89,7 @@ namespace ChatMarchenkoIlya.Services
                         
                     },
                     IsPrivate = IsPrivat,
-                };
+                };               
                 Chat chat = AC.Chats.FirstOrDefault(x => x.Name == NameChat);
                 if (chat==null)
                 {                    
@@ -117,8 +117,8 @@ namespace ChatMarchenkoIlya.Services
         }
         public Chat AddChat(string NameChat, int userid, User user2, bool IsPrivat)
         {
-            using (ApplicationContext AC = new())
-            {
+                ApplicationContext AC = new();
+            
                 User user = AC.Users.FirstOrDefault(x => x.Id == userid);
 
                 Chat findchat = new()
@@ -134,7 +134,7 @@ namespace ChatMarchenkoIlya.Services
                 Chat chat = AC.Chats.FirstOrDefault(x => x.Name == NameChat);
                 if (chat == null)
                 {
-                    AC.Chats.Add(findchat);
+                    AC.Chats.Update(findchat);
                     try
                     {
                         AC.SaveChanges();
@@ -154,7 +154,7 @@ namespace ChatMarchenkoIlya.Services
 
 
 
-            }
+            
         }
         public string ExitChat(User user,int IdChat)
         {
