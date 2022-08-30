@@ -274,6 +274,7 @@ namespace ChatMarchenkoIlya.Controllers
             List<Object> objl = new();
             
             Chat c = new Chat();            
+            
             using (ApplicationContext AC = new ApplicationContext())
             {
                 User user = AC.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == UserId); 
