@@ -10,11 +10,15 @@
         @{
             foreach (var item in Model[0].Chats)
             {
-                <input type="checkbox" class="check" name="ChatId" value="@item.Id" />
-                <div class="Chat-User">                            
-                    <input style="display:none;" type="text" name="UserId" value="@Model[0].Id" />                           
-                    <h5>@item.Name</h5>                            
-                </div>
+                if(item.IsPrivate==false)
+                {
+                    <input type="checkbox" class="check" name="ChatId" value="@item.Id" />
+                    <div class="Chat-User">
+                        <input style="display:none;" type="text" name="UserId" value="@Model[0].Id" />
+                        <h5>@item.Name</h5>
+                    </div>
+                }
+                
             }
         }
         <button type="submit">
