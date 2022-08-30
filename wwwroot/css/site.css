@@ -79,6 +79,7 @@ div.user-message {
     
     scroll-behavior: auto;
     word-wrap: break-word;
+    color:white;
 }
 div.block4 {
     margin: 40px;

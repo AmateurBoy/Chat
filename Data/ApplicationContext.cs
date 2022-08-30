@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Net.Sockets;
 using System.Security.Principal;
-
+using System.Text.Json;
 
 namespace ChatMarchenkoIlya.Data
 {
@@ -30,7 +30,9 @@ namespace ChatMarchenkoIlya.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Data Source=chatdbtest.database.windows.net,1433;Initial Catalog=coreDb;User ID=superuser;Password=Admin159753;");
+            
+           
+            options.UseSqlServer(Connect.getInstance("d").Name);
             
         }
         
