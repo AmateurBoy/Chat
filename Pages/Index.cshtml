@@ -7,7 +7,7 @@
         foreach (var item in Model[0].Chats)
         {
                 string puth = $"/Message?ChatId={item.Id}&UserId={Model[0].Id}";
-                <a class="nav-link" style="color:#ab68a8;margin-top:3%;" href=@puth>
+                <a class="nav-link" style="color:#ab68a8;margin-top:3%; background:#474747;" href=@puth>
                     <div class="Chat-User">
                         <h5>@item.Name</h5>
                     </div>
