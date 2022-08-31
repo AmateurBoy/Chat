@@ -16,7 +16,7 @@ namespace ChatMarchenkoIlya.Services
             using var AC = new ApplicationContext();
 
             Random random = new Random();
-                if (AC.Users.FirstOrDefaultAsync(x => x.Id == user.Id) == null)
+                if (await AC.Users.FirstOrDefaultAsync(x => x.Id == user.Id) == null)
                 {
                     user.Name = $"User{random.Next(000000, 999999)}";
                     Chat findchat = await AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == 29);
@@ -28,7 +28,7 @@ namespace ChatMarchenkoIlya.Services
                 }
                 else
                 {
-                    throw new System.ArgumentException("Акаунт уже существует", nameof(user));
+                    return user;
                 }
             
             
