@@ -26,12 +26,8 @@
                     </div>
                     <div id="rightThing" style="text-align: center; padding-top:10px;">
                     <a href="/"><img src="/img/usersimg/users.png" height="25" /></a>                    
-                    @{
-                        UserService us = new();
-                        
-                                        <h8 style="color:azure">@us.GetUser(Model[1]).Name</h8>
-                        
-                    }
+                    <h8 style="color:azure">@Model[2]</h8>
+                      
                     </div>
                 </div>
         </nav>        

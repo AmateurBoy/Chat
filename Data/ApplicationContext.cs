@@ -25,15 +25,11 @@ namespace ChatMarchenkoIlya.Data
         public ApplicationContext()
         {
             Database.EnsureCreated();
-            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            
-           
             options.UseSqlServer(Connect.getInstance("d").Name);
-            
         }
         
         

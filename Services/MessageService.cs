@@ -8,105 +8,105 @@ namespace ChatMarchenkoIlya.Services
 {
     public class MessageService
     {
-        static ApplicationContext AC = new ApplicationContext();
-        
-        public Message GetMessage(int mesgId)
+       
+        public async Task<Message> GetMessage(int mesgId)
         {
+            using var AC = new ApplicationContext();
+            return await AC.Messages.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == mesgId);
             
-                return AC.Messages.Include(x => x.User).FirstOrDefault(x => x.Id == mesgId);
-            
-
         }
-        public Chat CreateMessage(string Text, int UserId,int ChatId)
+        public async Task<Chat> CreateMessage(string Text, int UserId,int ChatId)
         {
-            
-                Chat chat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == ChatId);
-                
+            using var AC = new ApplicationContext();
+
+            Chat chat = await AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == ChatId);
+
                 Message Mesg = new()
                 {
                     Text = Text,
                     dateTime = DateTime.Now,
-                    User= AC.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == UserId),
-                    Chat= new List<Chat>() 
-                    {
-                        chat
-                    }
-                };  
-                
-                AC.Messages.Add(Mesg);
-                AC.SaveChanges();
+                    User = await AC.Users.Include(x => x.Chats).FirstOrDefaultAsync(x => x.Id == UserId),
+                    Chat = new List<Chat>()
+                {
+                    chat
+                }
+                };
+
+                await AC.Messages.AddAsync(Mesg);
+                await AC.SaveChangesAsync();
                 return chat;
             
-        }
-        public Chat CreateMessageReply(string Text, int UserId, int ChatId)
-        {
             
-                Chat chat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == ChatId);
+        }
+        public async Task<Chat> CreateMessageReply(string Text, int UserId, int ChatId)
+        {
+            using var AC = new ApplicationContext();
+
+            Chat chat = await AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == ChatId);
 
                 Message Mesg = new()
                 {
                     Text = Text,
                     Reply = true,
                     dateTime = DateTime.Now,
-                    User = AC.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == UserId),
+                    User = await AC.Users.Include(x => x.Chats).FirstOrDefaultAsync(x => x.Id == UserId),
                     Chat = new List<Chat>()
                     {
                         chat
                     }
                 };
 
-                AC.Messages.Add(Mesg);
-                AC.SaveChanges();
+                await AC.Messages.AddAsync(Mesg);
+                await AC.SaveChangesAsync();
                 return chat;
             
-        }
-        public void DelMessage(int mesgId)
-        {
             
-                try
+        }
+        public async void DelMessage(int mesgId)
+        {
+            using var AC = new ApplicationContext();
+
+            try
                 {
-                    AC.Remove(AC.Messages.FirstOrDefault(x => x.Id == mesgId));
-                    AC.SaveChanges();
+                    AC.Remove(await AC.Messages.FirstOrDefaultAsync(x => x.Id == mesgId));
+                    await AC.SaveChangesAsync();
                 }
                 catch
                 {
 
                 }
+            
                 
             
         }
-        public void DisplayMessage(int mesgId)
+        public async void DisplayMessage(int mesgId)
         {
-            
-                try
+            using var AC = new ApplicationContext();
+
+            try
                 {
-                    Message msg = AC.Messages.FirstOrDefault(x => x.Id == mesgId);
+                    Message msg = await AC.Messages.FirstOrDefaultAsync(x => x.Id == mesgId);
                     msg.IsDisplay = true;
                     AC.Update(msg);
-                    AC.SaveChanges();
+                    await AC.SaveChangesAsync();
                 }
                 catch
                 {
 
                 }
-
             
         }
-        public void EditMessage(int mesgId,string Text)
+        public async Task <string> EditMessage(int mesgId,string Text)
         {
-           
-                Message Msg = AC.Messages.FirstOrDefault(x => x.Id == mesgId);
+            using var AC = new ApplicationContext();
+
+            Message Msg = await AC.Messages.FirstOrDefaultAsync(x => x.Id == mesgId);
                 Msg.Text = Text;
                 AC.Update(Msg);
-                AC.SaveChanges();
+                await AC.SaveChangesAsync();
+                return "good";
             
         }
-        public void ReplyMessage(string Text, int UserId, int ChatId)
-        {
-            using (ApplicationContext AC = new())
-            {
-                
-            }
-        }
+       
     }
 }

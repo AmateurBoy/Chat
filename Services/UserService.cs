@@ -9,20 +9,21 @@ namespace ChatMarchenkoIlya.Services
     
     public  class UserService
     {
-         static ApplicationContext AC = new();
+        
 
-        public User Registers(User user)
+        public async Task<User> Registers(User user)
         {
-            
-                Random random = new Random();
-                if (AC.Users.FirstOrDefault(x => x.Id == user.Id) == null)
+            using var AC = new ApplicationContext();
+
+            Random random = new Random();
+                if (AC.Users.FirstOrDefaultAsync(x => x.Id == user.Id) == null)
                 {
                     user.Name = $"User{random.Next(000000, 999999)}";
-                    Chat findchat = AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefault(x => x.Id == 29);
+                    Chat findchat = await AC.Chats.Include(x => x.Messages).Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == 29);
                     findchat.Users.Add(user);
-                    AC.Users.Add(user);
-                    AC.Chats.Update(findchat);                    
-                    AC.SaveChanges();
+                    await AC.Users.AddAsync(user);
+                    AC.Chats.Update(findchat);
+                    await AC.SaveChangesAsync();
                     return user;
                 }
                 else
@@ -30,30 +31,32 @@ namespace ChatMarchenkoIlya.Services
                     throw new System.ArgumentException("Акаунт уже существует", nameof(user));
                 }
             
-        }
-        public List<User> GetAllUsers()
-        {
             
-                List<User> users = AC.Users.ToList<User>();
+        }
+        public async Task<List<User>> GetAllUsers()
+        {
+            using var AC = new ApplicationContext();
+
+            List<User> users = await AC.Users.ToListAsync<User>();
                 return users;
             
         }
-        public  User GetUser(int id)
+        public async Task<User> GetUser(int id)
         {
+            using var AC = new ApplicationContext();
+
+            User user = await AC.Users.Include(x => x.Chats).FirstOrDefaultAsync(x => x.Id == id);
+                return user;
             
-                
-                User user = AC.Users.Include(x => x.Chats).FirstOrDefault(x=>x.Id==id);
-                return user;                
-            
-        }
-     
-        public void EditUser(int id,string newName)
+        }     
+        public async void EditUser(int id,string newName)
         {
-            
-                User U = AC.Users.FirstOrDefault(x => x.Id == id);
+            using var AC = new ApplicationContext();
+
+            User U = await AC.Users.FirstOrDefaultAsync(x => x.Id == id);
                 U.Name = newName;
                 AC.Users.Update(U);
-                AC.SaveChanges();
+                await AC.SaveChangesAsync();
             
         }
 
